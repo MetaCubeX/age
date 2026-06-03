@@ -12,7 +12,7 @@ import (
 	"testing"
 	"testing/iotest"
 
-	"filippo.io/age/internal/stream"
+	"github.com/metacubex/age/internal/stream"
 	"golang.org/x/crypto/chacha20poly1305"
 )
 
@@ -53,7 +53,10 @@ func testRoundTrip(t *testing.T, stepSize, length int) {
 
 		var n int
 		for n < length {
-			b := min(length-n, stepSize)
+			b := length - n
+			if b > stepSize {
+				b = stepSize
+			}
 			nn, err := w.Write(src[n : n+b])
 			if err != nil {
 				t.Fatal(err)
@@ -781,9 +784,9 @@ func TestDecryptReaderAtConcurrent(t *testing.T) {
 		const iterations = 100
 		errc := make(chan error, goroutines)
 
-		for g := range goroutines {
+		for g := 0; g < goroutines; g++ {
 			go func(id int) {
-				for i := range iterations {
+				for i := 0; i < iterations; i++ {
 					off := int64((id*iterations + i) % 500)
 					p := make([]byte, 100)
 					n, err := ra.ReadAt(p, off)
@@ -804,7 +807,7 @@ func TestDecryptReaderAtConcurrent(t *testing.T) {
 			}(g)
 		}
 
-		for range goroutines {
+		for g := 0; g < goroutines; g++ {
 			if err := <-errc; err != nil {
 				t.Error(err)
 			}
@@ -817,9 +820,9 @@ func TestDecryptReaderAtConcurrent(t *testing.T) {
 		const iterations = 100
 		errc := make(chan error, goroutines)
 
-		for g := range goroutines {
+		for g := 0; g < goroutines; g++ {
 			go func(id int) {
-				for i := range iterations {
+				for i := 0; i < iterations; i++ {
 					// Each goroutine reads from a different chunk based on id
 					chunkIdx := id % 3
 					off := int64(chunkIdx*cs + (i % 400))
@@ -849,7 +852,7 @@ func TestDecryptReaderAtConcurrent(t *testing.T) {
 			}(g)
 		}
 
-		for range goroutines {
+		for g := 0; g < goroutines; g++ {
 			if err := <-errc; err != nil {
 				t.Error(err)
 			}
@@ -862,9 +865,9 @@ func TestDecryptReaderAtConcurrent(t *testing.T) {
 		const iterations = 100
 		errc := make(chan error, goroutines)
 
-		for g := range goroutines {
+		for g := 0; g < goroutines; g++ {
 			go func(id int) {
-				for i := range iterations {
+				for i := 0; i < iterations; i++ {
 					// Read across chunk boundaries
 					boundary := (id%2 + 1) * cs // either cs or 2*cs
 					off := int64(boundary - 50 + (i % 30))
@@ -897,7 +900,7 @@ func TestDecryptReaderAtConcurrent(t *testing.T) {
 			}(g)
 		}
 
-		for range goroutines {
+		for g := 0; g < goroutines; g++ {
 			if err := <-errc; err != nil {
 				t.Error(err)
 			}

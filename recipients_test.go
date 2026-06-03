@@ -10,7 +10,7 @@ import (
 	"io"
 	"testing"
 
-	"filippo.io/age"
+	"github.com/metacubex/age"
 )
 
 func TestX25519RoundTrip(t *testing.T) {

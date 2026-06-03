@@ -23,9 +23,9 @@ import (
 	"fmt"
 	"io"
 
-	"filippo.io/age"
-	"filippo.io/age/internal/format"
-	"filippo.io/edwards25519"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/internal/format"
+	"github.com/metacubex/edwards25519"
 	"golang.org/x/crypto/chacha20poly1305"
 	"golang.org/x/crypto/curve25519"
 	"golang.org/x/crypto/hkdf"
@@ -188,8 +188,8 @@ func ParseRecipient(s string) (age.Recipient, error) {
 }
 
 func ed25519PublicKeyToCurve25519(pk ed25519.PublicKey) ([]byte, error) {
-	// See https://blog.filippo.io/using-ed25519-keys-for-encryption and
-	// https://pkg.go.dev/filippo.io/edwards25519#Point.BytesMontgomery.
+	// See https://blog.github.com/metacubex/using-ed25519-keys-for-encryption and
+	// https://pkg.go.dev/github.com/metacubex/edwards25519#Point.BytesMontgomery.
 	p, err := new(edwards25519.Point).SetBytes(pk)
 	if err != nil {
 		return nil, err

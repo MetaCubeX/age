@@ -1,22 +1,14 @@
-module filippo.io/age
+module github.com/metacubex/age
 
-go 1.24.0
-
-// Release build version.
-toolchain go1.25.5
+go 1.20
 
 require (
-	filippo.io/edwards25519 v1.1.0
-	filippo.io/hpke v0.4.0
-	filippo.io/nistec v0.0.4
-	golang.org/x/crypto v0.45.0
-	golang.org/x/sys v0.38.0
-	golang.org/x/term v0.37.0
-)
-
-// Test dependencies.
-require (
-	c2sp.org/CCTV/age v0.0.0-20251208015420-e9274a7bdbfd
-	github.com/rogpeppe/go-internal v1.14.1
-	golang.org/x/tools v0.39.0 // indirect
+	github.com/metacubex/edwards25519 v1.2.0
+	github.com/metacubex/hkdf v0.1.0
+	github.com/metacubex/hpke v0.1.0
+	github.com/metacubex/mlkem v0.1.0
+	github.com/metacubex/nistec v0.0.4
+	golang.org/x/crypto v0.33.0
+	golang.org/x/sys v0.30.0
+	golang.org/x/term v0.29.0
 )

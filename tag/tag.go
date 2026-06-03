@@ -14,17 +14,16 @@ package tag
 
 import (
 	"crypto/ecdh"
-	"crypto/hkdf"
-	"crypto/mlkem"
 	"crypto/sha256"
 	"fmt"
-	"slices"
 
-	"filippo.io/age"
-	"filippo.io/age/internal/format"
-	"filippo.io/age/plugin"
-	"filippo.io/hpke"
-	"filippo.io/nistec"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/internal/format"
+	"github.com/metacubex/age/plugin"
+	"github.com/metacubex/hkdf"
+	"github.com/metacubex/hpke"
+	"github.com/metacubex/mlkem"
+	"github.com/metacubex/nistec"
 )
 
 // Recipient is a tagged P-256 or hybrid P-256 + ML-KEM-768 recipient.
@@ -119,7 +118,7 @@ func (r *Recipient) Tag(enc []byte) ([]byte, error) {
 		return nil, fmt.Errorf("invalid ciphertext size")
 	}
 	rh := sha256.Sum256(tagRecipient)
-	tag, err := hkdf.Extract(sha256.New, append(slices.Clip(enc), rh[:4]...), []byte(label))
+	tag, err := hkdf.Extract(sha256.New, append(enc[:len(enc):len(enc)], rh[:4]...), []byte(label))
 	if err != nil {
 		return nil, fmt.Errorf("failed to compute tag: %v", err)
 	}

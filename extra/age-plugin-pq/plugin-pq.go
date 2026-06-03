@@ -8,9 +8,9 @@ import (
 	"os"
 	"runtime/debug"
 
-	"filippo.io/age"
-	"filippo.io/age/internal/bech32"
-	"filippo.io/age/plugin"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/internal/bech32"
+	"github.com/metacubex/age/plugin"
 )
 
 const usage = `Usage:
@@ -143,7 +143,7 @@ func convert(in io.Reader, out io.Writer) {
 
 func errorf(format string, v ...any) {
 	log.Printf("age-plugin-pq: error: "+format, v...)
-	log.Fatalf("age-plugin-pq: report unexpected or unhelpful errors at https://filippo.io/age/report")
+	log.Fatalf("age-plugin-pq: report unexpected or unhelpful errors at https://github.com/metacubex/age/report")
 }
 
 func warning(msg string) {

@@ -9,11 +9,11 @@ import (
 	"crypto/subtle"
 	"fmt"
 
-	"filippo.io/age"
-	"filippo.io/age/internal/format"
-	"filippo.io/age/tag"
-	"filippo.io/hpke"
-	"filippo.io/nistec"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/internal/format"
+	"github.com/metacubex/age/tag"
+	"github.com/metacubex/hpke"
+	"github.com/metacubex/nistec"
 )
 
 type ClassicIdentity struct {

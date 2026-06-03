@@ -9,9 +9,9 @@ import (
 	"io"
 	"testing"
 
-	"filippo.io/age"
-	"filippo.io/age/tag"
-	"filippo.io/age/tag/internal/tagtest"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/tag"
+	"github.com/metacubex/age/tag/internal/tagtest"
 )
 
 func TestClassicRoundTrip(t *testing.T) {

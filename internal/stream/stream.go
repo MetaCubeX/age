@@ -202,7 +202,10 @@ func (w *EncryptWriter) Write(p []byte) (n int, err error) {
 
 	total := len(p)
 	for len(p) > 0 {
-		n := min(len(p), ChunkSize-w.buf.Len())
+		n := ChunkSize - w.buf.Len()
+		if len(p) < n {
+			n = len(p)
+		}
 		w.buf.Write(p[:n])
 		p = p[n:]
 
@@ -277,7 +280,11 @@ func NewEncryptReader(key []byte, src io.Reader) (*EncryptReader, error) {
 
 func (r *EncryptReader) Read(p []byte) (int, error) {
 	if r.ready > 0 {
-		n, err := r.buf.Read(p[:min(len(p), r.ready)])
+		end := r.ready
+		if len(p) < end {
+			end = len(p)
+		}
+		n, err := r.buf.Read(p[:end])
 		r.ready -= n
 		return n, err
 	}
@@ -293,7 +300,11 @@ func (r *EncryptReader) Read(p []byte) (int, error) {
 		return 0, err
 	}
 
-	n, err := r.buf.Read(p[:min(len(p), r.ready)])
+	end := r.ready
+	if len(p) < end {
+		end = len(p)
+	}
+	n, err := r.buf.Read(p[:end])
 	r.ready -= n
 	return n, err
 }
@@ -404,7 +415,10 @@ func (r *DecryptReaderAt) ReadAt(p []byte, off int64) (n int, err error) {
 		chunkIndex := off / ChunkSize
 		chunkOff := chunkIndex * encChunkSize
 		encSize := r.size + r.chunks*chacha20poly1305.Overhead
-		chunkSize := min(encSize-chunkOff, encChunkSize)
+		chunkSize := encSize - chunkOff
+		if chunkSize > encChunkSize {
+			chunkSize = encChunkSize
+		}
 
 		cached := r.cache.Load()
 		var plaintext []byte
@@ -435,7 +449,10 @@ func (r *DecryptReaderAt) ReadAt(p []byte, off int64) (n int, err error) {
 		}
 
 		plainChunkOff := int(off - chunkIndex*ChunkSize)
-		copySize := min(len(plaintext)-plainChunkOff, len(p))
+		copySize := len(plaintext) - plainChunkOff
+		if len(p) < copySize {
+			copySize = len(p)
+		}
 		copy(p, plaintext[plainChunkOff:plainChunkOff+copySize])
 		p = p[copySize:]
 		off += int64(copySize)

@@ -12,7 +12,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"filippo.io/age/internal/format"
+	"github.com/metacubex/age/internal/format"
 	"golang.org/x/crypto/chacha20poly1305"
 	"golang.org/x/crypto/scrypt"
 )
@@ -98,7 +98,7 @@ func (r *ScryptRecipient) Wrap(fileKey []byte) ([]*Stanza, error) {
 // encrypted to other recipients, those parties can produce different files that
 // would break that expectation.
 //
-// [authenticated]: https://words.filippo.io/dispatches/age-authentication/
+// [authenticated]: https://words.github.com/metacubex/dispatches/age-authentication/
 func (r *ScryptRecipient) WrapWithLabels(fileKey []byte) (stanzas []*Stanza, labels []string, err error) {
 	stanzas, err = r.Wrap(fileKey)
 

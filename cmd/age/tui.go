@@ -23,8 +23,8 @@ import (
 	"log"
 	"os"
 
-	"filippo.io/age/armor"
-	"filippo.io/age/internal/term"
+	"github.com/metacubex/age/armor"
+	"github.com/metacubex/age/internal/term"
 )
 
 // l is a logger with no prefixes.
@@ -36,7 +36,7 @@ func printf(format string, v ...any) {
 
 func errorf(format string, v ...any) {
 	l.Printf("age: error: "+format, v...)
-	l.Printf("age: report unexpected or unhelpful errors at https://filippo.io/age/report")
+	l.Printf("age: report unexpected or unhelpful errors at https://github.com/metacubex/age/report")
 	os.Exit(1)
 }
 
@@ -49,7 +49,7 @@ func errorWithHint(error string, hints ...string) {
 	for _, hint := range hints {
 		l.Printf("age: hint: %s", hint)
 	}
-	l.Printf("age: report unexpected or unhelpful errors at https://filippo.io/age/report")
+	l.Printf("age: report unexpected or unhelpful errors at https://github.com/metacubex/age/report")
 	os.Exit(1)
 }
 

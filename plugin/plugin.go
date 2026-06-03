@@ -16,8 +16,8 @@ import (
 	"os"
 	"strconv"
 
-	"filippo.io/age"
-	"filippo.io/age/internal/format"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/internal/format"
 )
 
 // TODO: add plugin test framework.

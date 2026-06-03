@@ -8,10 +8,10 @@
 // For most use cases, use the [Encrypt] and [Decrypt] functions with
 // [HybridRecipient] and [HybridIdentity]. If passphrase encryption is
 // required, use [ScryptRecipient] and [ScryptIdentity]. For compatibility with
-// existing SSH keys use the filippo.io/age/agessh package.
+// existing SSH keys use the github.com/metacubex/age/agessh package.
 //
 // age encrypted files are binary and not malleable. For encoding them as text,
-// use the filippo.io/age/armor package.
+// use the github.com/metacubex/age/armor package.
 //
 // # Key management
 //
@@ -52,11 +52,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"slices"
 	"sort"
 
-	"filippo.io/age/internal/format"
-	"filippo.io/age/internal/stream"
+	"github.com/metacubex/age/internal/format"
+	"github.com/metacubex/age/internal/stream"
 )
 
 // An Identity is passed to [Decrypt] to unwrap an opaque file key from a
@@ -220,9 +219,18 @@ func slicesEqual(s1, s2 []string) bool {
 	return true
 }
 
+func slicesContains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 func incompatibleLabelsError(l1, l2 []string) error {
-	hasPQ1 := slices.Contains(l1, "postquantum")
-	hasPQ2 := slices.Contains(l2, "postquantum")
+	hasPQ1 := slicesContains(l1, "postquantum")
+	hasPQ2 := slicesContains(l2, "postquantum")
 	if hasPQ1 != hasPQ2 {
 		return fmt.Errorf("incompatible recipients: can't mix post-quantum and classic recipients, or the file would be vulnerable to quantum computers")
 	}
@@ -333,23 +341,23 @@ func decryptHdr(hdr *format.Header, identities ...Identity) ([]byte, error) {
 	if len(identities) == 0 {
 		return nil, errors.New("no identities specified")
 	}
-	slices.SortStableFunc(identities, func(a, b Identity) int {
+	sort.SliceStable(identities, func(i, j int) bool {
 		var aIsNative, bIsNative bool
-		switch a.(type) {
+		switch identities[i].(type) {
 		case *X25519Identity, *HybridIdentity, *ScryptIdentity:
 			aIsNative = true
 		}
-		switch b.(type) {
+		switch identities[j].(type) {
 		case *X25519Identity, *HybridIdentity, *ScryptIdentity:
 			bIsNative = true
 		}
 		if aIsNative && !bIsNative {
-			return -1
+			return true
 		}
 		if !aIsNative && bIsNative {
-			return 1
+			return false
 		}
-		return 0
+		return false
 	})
 
 	stanzas := make([]*Stanza, 0, len(hdr.Recipients))

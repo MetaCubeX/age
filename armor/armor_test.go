@@ -18,9 +18,9 @@ import (
 	"strings"
 	"testing"
 
-	"filippo.io/age"
-	"filippo.io/age/armor"
-	"filippo.io/age/internal/format"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/armor"
+	"github.com/metacubex/age/internal/format"
 )
 
 func ExampleNewWriter() {

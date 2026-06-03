@@ -13,11 +13,10 @@ import (
 	"io/fs"
 	"log"
 	"os"
-	"slices"
 	"strings"
 	"testing"
 
-	"filippo.io/age"
+	"github.com/metacubex/age"
 )
 
 func ExampleEncrypt() {
@@ -410,9 +409,21 @@ func TestNoIdentityMatchErrorStanzaTypes(t *testing.T) {
 	}
 
 	want := []string{"X25519", "other", "X25519"}
-	if !slices.Equal(noMatch.StanzaTypes, want) {
+	if !slicesEqual(noMatch.StanzaTypes, want) {
 		t.Errorf("StanzaTypes = %v, want %v", noMatch.StanzaTypes, want)
 	}
+}
+
+func slicesEqual[S ~[]E, E comparable](s1, s2 S) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+	for i := range s1 {
+		if s1[i] != s2[i] {
+			return false
+		}
+	}
+	return true
 }
 
 func TestScryptIdentityErrors(t *testing.T) {

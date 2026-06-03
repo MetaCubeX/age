@@ -6,8 +6,8 @@
     </picture>
 </p>
 
-[![Go Reference](https://pkg.go.dev/badge/filippo.io/age.svg)](https://pkg.go.dev/filippo.io/age)
-[![man page](<https://img.shields.io/badge/age(1)-man%20page-lightgrey>)](https://filippo.io/age/age.1)
+[![Go Reference](https://pkg.go.dev/badge/github.com/metacubex/age.svg)](https://pkg.go.dev/github.com/metacubex/age)
+[![man page](<https://img.shields.io/badge/age(1)-man%20page-lightgrey>)](https://github.com/metacubex/age/age.1)
 [![C2SP specification](https://img.shields.io/badge/%C2%A7%23-specification-blueviolet)](https://age-encryption.org/v1)
 
 age is a simple, modern and secure file encryption tool, format, and Go library.
@@ -150,8 +150,8 @@ $ age --decrypt -i key.txt data.tar.gz.age > data.tar.gz
 On Windows, Linux, macOS, and FreeBSD you can use the pre-built binaries.
 
 ```
-https://dl.filippo.io/age/latest?for=linux/amd64
-https://dl.filippo.io/age/v1.3.1?for=darwin/arm64
+https://dl.github.com/metacubex/age/latest?for=linux/amd64
+https://dl.github.com/metacubex/age/v1.3.1?for=darwin/arm64
 ...
 ```
 
@@ -160,14 +160,14 @@ If you download the pre-built binaries, you can check their [Sigsum proofs](./SI
 If your system has [a supported version of Go](https://go.dev/dl/), you can build from source.
 
 ```
-go install filippo.io/age/cmd/...@latest
+go install github.com/metacubex/age/cmd/...@latest
 ```
 
 Help from new packagers is very welcome.
 
 ## Usage
 
-For the full documentation, read [the age(1) man page](https://filippo.io/age/age.1).
+For the full documentation, read [the age(1) man page](https://github.com/metacubex/age/age.1).
 
 ```
 Usage:

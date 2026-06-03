@@ -13,12 +13,12 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"filippo.io/age"
-	"filippo.io/age/agessh"
-	"filippo.io/age/armor"
-	"filippo.io/age/internal/term"
-	"filippo.io/age/plugin"
-	"filippo.io/age/tag"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/agessh"
+	"github.com/metacubex/age/armor"
+	"github.com/metacubex/age/internal/term"
+	"github.com/metacubex/age/plugin"
+	"github.com/metacubex/age/tag"
 	"golang.org/x/crypto/cryptobyte"
 	"golang.org/x/crypto/ssh"
 )

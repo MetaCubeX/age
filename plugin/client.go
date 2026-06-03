@@ -12,7 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	mathrand "math/rand/v2"
+	mathrand "math/rand"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -21,8 +21,8 @@ import (
 
 	exec "golang.org/x/sys/execabs"
 
-	"filippo.io/age"
-	"filippo.io/age/internal/format"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/internal/format"
 )
 
 type Recipient struct {
@@ -491,15 +491,15 @@ func writeStanzaWithBody(conn io.Writer, t string, body []byte) error {
 }
 
 func writeGrease(conn io.Writer) (sent bool, err error) {
-	if mathrand.IntN(3) == 0 {
+	if mathrand.Intn(3) == 0 {
 		return false, nil
 	}
 	s := &format.Stanza{Type: fmt.Sprintf("grease-%x", mathrand.Int())}
-	for i := 0; i < mathrand.IntN(3); i++ {
-		s.Args = append(s.Args, fmt.Sprintf("%d", mathrand.IntN(100)))
+	for i := 0; i < mathrand.Intn(3); i++ {
+		s.Args = append(s.Args, fmt.Sprintf("%d", mathrand.Intn(100)))
 	}
-	if mathrand.IntN(2) == 0 {
-		s.Body = make([]byte, mathrand.IntN(100))
+	if mathrand.Intn(2) == 0 {
+		s.Body = make([]byte, mathrand.Intn(100))
 		rand.Read(s.Body)
 	}
 	return true, s.Marshal(conn)

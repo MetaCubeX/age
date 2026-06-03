@@ -13,8 +13,7 @@ import (
 	"runtime/debug"
 	"time"
 
-	"filippo.io/age"
-	"golang.org/x/term"
+	"github.com/metacubex/age"
 )
 
 const usage = `Usage:
@@ -145,10 +144,6 @@ func generate(out *os.File, pq bool) {
 		r = k.Recipient()
 	}
 
-	if !term.IsTerminal(int(out.Fd())) {
-		fmt.Fprintf(os.Stderr, "Public key: %s\n", r)
-	}
-
 	fmt.Fprintf(out, "# created: %s\n", time.Now().Format(time.RFC3339))
 	fmt.Fprintf(out, "# public key: %s\n", r)
 	fmt.Fprintf(out, "%s\n", i)
@@ -177,7 +172,7 @@ func convert(in io.Reader, out io.Writer) {
 
 func errorf(format string, v ...any) {
 	log.Printf("age-keygen: error: "+format, v...)
-	log.Fatalf("age-keygen: report unexpected or unhelpful errors at https://filippo.io/age/report")
+	log.Fatalf("age-keygen: report unexpected or unhelpful errors at https://github.com/metacubex/age/report")
 }
 
 func warning(msg string) {

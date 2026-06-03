@@ -6,12 +6,12 @@ package plugin
 
 import (
 	"crypto/ecdh"
-	"crypto/mlkem"
 	"fmt"
 	"strings"
 
-	"filippo.io/age/internal/bech32"
-	"filippo.io/hpke"
+	"github.com/metacubex/age/internal/bech32"
+	"github.com/metacubex/hpke"
+	"github.com/metacubex/mlkem"
 )
 
 // EncodeIdentity encodes a plugin identity string for a plugin with the given

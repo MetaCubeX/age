@@ -11,20 +11,19 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"iter"
 	"os"
 	"path/filepath"
 	"regexp"
 	"runtime/debug"
-	"slices"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 
-	"filippo.io/age"
-	"filippo.io/age/agessh"
-	"filippo.io/age/armor"
-	"filippo.io/age/internal/term"
-	"filippo.io/age/plugin"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/agessh"
+	"github.com/metacubex/age/armor"
+	"github.com/metacubex/age/internal/term"
+	"github.com/metacubex/age/plugin"
 )
 
 const usage = `Usage:
@@ -158,7 +157,7 @@ func main() {
 
 			safe := true
 			unsafeShell := regexp.MustCompile(`[^\w@%+=:,./-]`)
-			if slices.ContainsFunc(os.Args, unsafeShell.MatchString) {
+			if slicesContainsFunc(os.Args, unsafeShell.MatchString) {
 				safe = false
 			}
 			if safe {
@@ -217,8 +216,8 @@ func main() {
 		}
 	}
 
-	warnDuplicates(slices.Values(recipientFlags), "recipient")
-	warnDuplicates(slices.Values(recipientsFileFlags), "recipients file")
+	warnDuplicates(slicesValues(recipientFlags), "recipient")
+	warnDuplicates(slicesValues(recipientsFileFlags), "recipients file")
 	warnDuplicates(func(yield func(string) bool) {
 		for _, f := range identityFlags {
 			if f.Type == "i" && !yield(f.Value) {
@@ -286,7 +285,7 @@ func main() {
 				// Buffer the output to check it's printable.
 				out = buf
 				defer func() {
-					if bytes.ContainsFunc(buf.Bytes(), func(r rune) bool {
+					if bytesContainsFunc(buf.Bytes(), func(r rune) bool {
 						return r != '\n' && r != '\r' && r != '\t' && unicode.IsControl(r)
 					}) {
 						errorWithHint("refusing to output binary to the terminal",
@@ -328,7 +327,7 @@ func passphrasePromptForEncryption() (string, error) {
 	p := string(pass)
 	if p == "" {
 		var words []string
-		for range 10 {
+		for i := 0; i < 10; i++ {
 			words = append(words, randomWord())
 		}
 		p = strings.Join(words, "-")
@@ -591,14 +590,46 @@ func absPath(name string) string {
 	return name
 }
 
-func warnDuplicates(s iter.Seq[string], name string) {
+func warnDuplicates(s func(yield func(string) bool), name string) {
 	seen := make(map[string]bool)
 	warned := make(map[string]bool)
-	for e := range s {
+	s(func(e string) bool {
 		if seen[e] && !warned[e] {
 			warningf("duplicate %s %q", name, e)
 			warned[e] = true
 		}
 		seen[e] = true
+		return true
+	})
+}
+
+func slicesValues[Slice ~[]E, E any](s Slice) func(yield func(E) bool) {
+	return func(yield func(E) bool) {
+		for _, v := range s {
+			if !yield(v) {
+				return
+			}
+		}
 	}
+}
+
+func slicesContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool {
+	for _, v := range s {
+		if f(v) {
+			return true
+		}
+	}
+	return false
+}
+
+func bytesContainsFunc(b []byte, f func(rune) bool) bool {
+	start := 0
+	for start < len(b) {
+		r, wid := utf8.DecodeRune(b[start:])
+		if f(r) == true {
+			return true
+		}
+		start += wid
+	}
+	return false
 }

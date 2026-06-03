@@ -12,7 +12,7 @@ import (
 	"os"
 	"runtime/debug"
 
-	"filippo.io/age/internal/inspect"
+	"github.com/metacubex/age/internal/inspect"
 )
 
 const usage = `Usage:
@@ -123,6 +123,6 @@ var l = log.New(os.Stderr, "", 0)
 
 func errorf(format string, v ...any) {
 	l.Printf("age-inspect: error: "+format, v...)
-	l.Printf("age-inspect: report unexpected or unhelpful errors at https://filippo.io/age/report")
+	l.Printf("age-inspect: report unexpected or unhelpful errors at https://github.com/metacubex/age/report")
 	os.Exit(1)
 }

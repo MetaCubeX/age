@@ -17,8 +17,8 @@ import (
 	"strings"
 	"testing"
 
-	"filippo.io/age"
-	"filippo.io/age/internal/bech32"
+	"github.com/metacubex/age"
+	"github.com/metacubex/age/internal/bech32"
 )
 
 func TestMain(m *testing.M) {

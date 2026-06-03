@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"filippo.io/age/internal/stream"
+	"github.com/metacubex/age/internal/stream"
 )
 
 func TestStreamOverhead(t *testing.T) {

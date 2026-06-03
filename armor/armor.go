@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"io"
 
-	"filippo.io/age/internal/format"
+	"github.com/metacubex/age/internal/format"
 )
 
 const (
